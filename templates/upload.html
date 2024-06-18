@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>File Upload</title>
+  </head>
+  <body>
+    <h1>Upload a File</h1>
+    <form method="post" action="/upload" enctype="multipart/form-data">
+      <input type="file" name="file">
+      <input type="submit" value="Upload">
+    </form>
+    {% if filename %}
+    <h2>Uploaded File:</h2>
+    <p>Filename: {{ filename }}</p>
+    <p>Filetype: {{ filetype }}</p>
+    {% if filetype in ['png', 'jpg', 'jpeg', 'gif'] %}
+      <img src="{{ url_for('uploaded_file', filename=filename) }}" alt="Uploaded Image" style="max-width: 500px;">
+    {% else %}
+      <a href="{{ url_for('uploaded_file', filename=filename) }}">{{ filename }}</a>
+    {% endif %}
+    {% endif %}
+  </body>
+</html>
