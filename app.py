@@ -24,7 +24,9 @@ def allowed_file(filename):
 # Home route with upload form
 @app.route('/')
 def upload_form():
-    return render_template('upload.html')
+    # Get the list of uploaded files (including previous uploads)
+    uploaded_files = os.listdir(UPLOAD_FOLDER)
+    return render_template('upload.html', uploaded_files=uploaded_files)
 
 # Handle file uploads
 @app.route('/upload', methods=['POST'])
@@ -43,9 +45,8 @@ def upload_file():
         filename = secure_filename(file.filename)
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
-        file_type = filename.rsplit('.', 1)[1].lower()
         flash('File uploaded successfully!')
-        return render_template('upload.html', filename=filename, filetype=file_type)
+        return redirect(url_for('upload_form'))
 
     flash('Invalid file type. Allowed types: png, jpg, jpeg, gif, pdf, txt, docx')
     return redirect(request.url)
@@ -53,9 +54,7 @@ def upload_file():
 # Serve uploaded files
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
-    # Serve files from the 'uploads' directory
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
-
 
 # Error handler for large files
 @app.errorhandler(413)
