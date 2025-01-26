@@ -2,6 +2,7 @@
 
 This is a simple Flask web application that allows users to upload files, view a list of previously uploaded files, and download them using different devices with same router. The app supports a variety of file types including images, PDFs, and text documents.
 
+![App Screenshot](app.PNG)
 ## Features
 - Upload files through a simple form.
 - View a list of previously uploaded files.
