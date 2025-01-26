@@ -1,25 +1,66 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Upload</title>
-  </head>
-  <body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center; 
+            padding: 20px;
+        }
+        .button-33 {
+          background-color: #c2fbd7;
+          border-radius: 100px;
+          color: green;
+          padding: 10px 20px;
+          text-decoration: none;
+          border: 0;
+          font-size: 16px;
+          cursor: pointer;
+        }
+        form {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f0f8ff;
+            border-radius: 10px;
+            max-width: 400px;
+        }
+        input[type="file"] {
+            margin-bottom: 15px;
+        }
+        .messages {
+            color: red;
+            margin-bottom: 15px;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
     <h1>Upload a File</h1>
-    <form method="post" action="/upload" enctype="multipart/form-data">
-      <input type="file" name="file">
-      <input type="submit" value="Upload">
+    <div class="messages">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit" class="button-33">Upload</button>
     </form>
     {% if filename %}
-    <h2>Uploaded File:</h2>
-    <p>Filename: {{ filename }}</p>
-    <p>Filetype: {{ filetype }}</p>
-    {% if filetype in ['png', 'jpg', 'jpeg', 'gif'] %}
-      <img src="{{ url_for('uploaded_file', filename=filename) }}" alt="Uploaded Image" style="max-width: 500px;">
-    {% else %}
-      <a href="{{ url_for('uploaded_file', filename=filename) }}">{{ filename }}</a>
+        <div class="success">
+            <h2>File Uploaded Successfully!</h2>
+            <p>Filename: {{ filename }}</p>
+            <p>Filetype: {{ filetype }}</p>
+            <a href="{{ url_for('uploaded_file', filename=filename) }}" target="_blank">View File</a>
+        </div>
     {% endif %}
-    {% endif %}
-  </body>
+</body>
 </html>
